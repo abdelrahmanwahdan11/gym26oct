@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +17,7 @@ import 'controllers/workout_controller.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
+import 'core/animations.dart';
 import 'data/repositories/clip_repository.dart';
 import 'data/repositories/flexpass_repository.dart';
 import 'data/repositories/prefs_repository.dart';
@@ -48,8 +48,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
   @override
   void initState() {
     super.initState();
-    final storage = GetStorage();
-    prefsRepository = PrefsRepository(widget.prefs, storage);
+    prefsRepository = PrefsRepository(widget.prefs);
     settingsController = SettingsController(prefsRepository);
     programsController = ProgramsController(ProgramsRepository(), prefsRepository);
     clipsController = ClipsController(ClipsRepository());
@@ -116,8 +115,8 @@ class _AthleticaAppState extends State<AthleticaApp> {
             initialRoute: settingsController.initialRoute,
             getPages: buildAppPages(),
             defaultTransition: Transition.noTransition,
-            customTransition: FadeSlidePageTransition(),
-            transitionDuration: const Duration(milliseconds: 280),
+            customTransition: const GlassPageTransition(),
+            transitionDuration: const Duration(milliseconds: 260),
             builder: (context, child) {
               final textTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
               return Directionality(

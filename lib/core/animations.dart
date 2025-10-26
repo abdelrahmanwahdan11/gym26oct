@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
-class FadeSlidePageTransition extends CustomTransition {
+class GlassPageTransition extends CustomTransition {
+  const GlassPageTransition();
+
   @override
   Widget buildTransition(
     BuildContext context,
@@ -12,11 +14,22 @@ class FadeSlidePageTransition extends CustomTransition {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final curved = CurvedAnimation(parent: animation, curve: curve ?? Curves.easeOut);
-    final offsetAnimation = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero).animate(curved);
+    final curved = CurvedAnimation(
+      parent: animation,
+      curve: curve ?? Curves.easeOutCubic,
+      reverseCurve: Curves.easeInOut,
+    );
+    final offsetAnimation = Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero).animate(curved);
+    final scaleAnimation = Tween<double>(begin: 0.98, end: 1).animate(curved);
     return FadeTransition(
       opacity: curved,
-      child: SlideTransition(position: offsetAnimation, child: child).animate().fadeIn(duration: 280.ms),
+      child: SlideTransition(
+        position: offsetAnimation,
+        child: ScaleTransition(
+          scale: scaleAnimation,
+          child: child.animate().fadeIn(duration: 240.ms, curve: Curves.easeOutCubic),
+        ),
+      ),
     );
   }
 }
@@ -31,8 +44,12 @@ class BottomSheetPageTransition extends CustomTransition {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final curved = CurvedAnimation(parent: animation, curve: curve ?? Curves.easeOut);
-    final offsetAnimation = Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(curved);
+    final curved = CurvedAnimation(
+      parent: animation,
+      curve: curve ?? Curves.easeOutCubic,
+      reverseCurve: Curves.easeIn,
+    );
+    final offsetAnimation = Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero).animate(curved);
     return FadeTransition(
       opacity: curved,
       child: SlideTransition(position: offsetAnimation, child: child),
