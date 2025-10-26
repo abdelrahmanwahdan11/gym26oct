@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../controllers/clips_controller.dart';
@@ -81,7 +82,7 @@ class _ClipsListScreenState extends State<ClipsListScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'clips') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

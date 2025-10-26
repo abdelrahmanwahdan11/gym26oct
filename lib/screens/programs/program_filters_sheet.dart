@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 
@@ -37,7 +38,7 @@ class _ProgramFiltersSheetState extends State<ProgramFiltersSheet> {
             ElevatedButton(
               onPressed: () {
                 programs.setLevelFilter(_level);
-                Navigator.of(context).pop();
+                Get.back();
               },
               style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
               child: const Text('Apply Filters'),

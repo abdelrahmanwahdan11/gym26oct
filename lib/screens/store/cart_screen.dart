@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 
@@ -53,7 +54,7 @@ class CartScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed('store.checkout'),
+                onPressed: () => Get.toNamed('store.checkout'),
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                 child: Text('Checkout • Total ${store.cartTotal(products).toStringAsFixed(2)} USD'),
               ),

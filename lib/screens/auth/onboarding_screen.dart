@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../controllers/settings_controller.dart';
@@ -123,7 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       onPressed: () async {
                         await settings.markOnboardingComplete();
                         if (!mounted) return;
-                        Navigator.of(context).pushReplacementNamed('auth.login');
+                        Get.offAllNamed('auth.login');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -138,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       onPressed: () async {
                         await settings.markOnboardingComplete();
                         if (!mounted) return;
-                        Navigator.of(context).pushReplacementNamed('auth.login');
+                        Get.offAllNamed('auth.login');
                       },
                       child: Text(
                         'تخطى واستكشف التطبيق',

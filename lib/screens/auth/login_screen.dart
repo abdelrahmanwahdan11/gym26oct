@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../controllers/auth_controller.dart';
@@ -98,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (_formKey.currentState?.validate() ?? false) {
                               await auth.loginMock(_emailController.text.trim());
                               if (!mounted) return;
-                              Navigator.of(context).pushReplacementNamed('home.generator');
+                              Get.offAllNamed('home.generator');
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -109,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ).animate().fadeIn(duration: 280.ms).moveY(begin: 12, end: 0),
                         const SizedBox(height: 16),
                         OutlinedButton(
-                          onPressed: () => Navigator.of(context).pushReplacementNamed('home.generator'),
+                          onPressed: () => Get.offAllNamed('home.generator'),
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size.fromHeight(52),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -121,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pushNamed('auth.register'),
+                              onPressed: () => Get.toNamed('auth.register'),
                               child: const Text('Create account / إنشاء حساب'),
                             ),
                             IconButton(

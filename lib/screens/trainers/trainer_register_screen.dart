@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 
@@ -38,7 +39,7 @@ class _TrainerRegisterScreenState extends State<TrainerRegisterScreen> {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context)
                       .showSnackBar(const SnackBar(content: Text('تم إنشاء ملف المدرب (محلي)')));
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                 child: const Text('حفظ الملف وإتاحته في التطبيق'),

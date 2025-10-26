@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import '../shared/gradient_background.dart';
 
@@ -109,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('تم إنشاء الحساب محلياً (Mock)')),
                               );
-                              Navigator.of(context).pop();
+                              Get.back();
                             }
                           },
                           style: ElevatedButton.styleFrom(

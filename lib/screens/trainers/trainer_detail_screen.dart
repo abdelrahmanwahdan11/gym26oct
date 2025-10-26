@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../data/models/trainer.dart';
@@ -108,7 +109,7 @@ class _TrainerDetailScreenState extends State<TrainerDetailScreen> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pushNamed('booking.sheet', arguments: trainer.id),
+                      onPressed: () => Get.toNamed('booking.sheet', arguments: trainer.id),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(52),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),

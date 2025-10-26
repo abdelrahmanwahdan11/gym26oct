@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../controllers/store_controller.dart';
@@ -44,7 +45,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
           activeTab: 'store',
           onTabSelected: (tab) => _handleTab(context, tab),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => Navigator.of(context).pushNamed('store.cart'),
+            onPressed: () => Get.toNamed('store.cart'),
             icon: const Icon(Icons.shopping_cart_outlined),
             label: Text('${store.cart.length}'),
           ),
@@ -102,7 +103,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     children: store.products
                         .map((product) => ProductCard(
                               product: product,
-                              onTap: () => Navigator.of(context).pushNamed('store.product', arguments: product.id),
+                              onTap: () => Get.toNamed('store.product', arguments: product.id),
                               onAdd: () => store.addToCart(product),
                             ))
                         .toList(),
@@ -123,7 +124,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'store') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

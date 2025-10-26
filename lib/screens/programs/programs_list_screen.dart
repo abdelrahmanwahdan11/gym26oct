@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../controllers/programs_controller.dart';
@@ -57,7 +58,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
                   ),
                   actions: [
                     IconButton(
-                      onPressed: () => Navigator.of(context).pushNamed('filters.sheet'),
+                      onPressed: () => Get.toNamed('filters.sheet'),
                       icon: const Icon(Icons.filter_alt_outlined),
                     )
                   ],
@@ -71,7 +72,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
                         return ProgramTile(
                           program: program,
                           isFavorite: programs.favorites.contains(program.id),
-                          onTap: () => Navigator.of(context).pushNamed('program.details', arguments: program.id),
+                          onTap: () => Get.toNamed('program.details', arguments: program.id),
                           onFavorite: () => programs.toggleFavorite(program.id),
                         );
                       },
@@ -102,7 +103,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'programs') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

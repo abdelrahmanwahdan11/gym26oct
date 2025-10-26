@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../core/localization/app_localizations.dart';
 import '../data/repositories/prefs_repository.dart';
@@ -29,12 +30,14 @@ class SettingsController extends ChangeNotifier {
   Future<void> toggleTheme() async {
     _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     await prefs.saveThemeMode(_themeMode);
+    Get.changeThemeMode(_themeMode);
     notifyListeners();
   }
 
   Future<void> setLocale(Locale locale) async {
     _locale = locale;
     await prefs.saveLocale(locale);
+    Get.updateLocale(locale);
     notifyListeners();
   }
 

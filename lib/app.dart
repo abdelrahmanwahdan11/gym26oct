@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +14,6 @@ import 'controllers/settings_controller.dart';
 import 'controllers/store_controller.dart';
 import 'controllers/trainers_controller.dart';
 import 'controllers/workout_controller.dart';
-import 'controllers/navigation_controller.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
@@ -43,7 +43,6 @@ class _AthleticaAppState extends State<AthleticaApp> {
   late final FlexPassController flexPassController;
   late final WorkoutController workoutController;
   late final AuthController authController;
-  late final NavigationController navigationController;
 
   @override
   void initState() {
@@ -57,7 +56,6 @@ class _AthleticaAppState extends State<AthleticaApp> {
     flexPassController = FlexPassController(FlexPassRepository(), prefsRepository);
     workoutController = WorkoutController(prefsRepository);
     authController = AuthController(prefsRepository);
-    navigationController = NavigationController();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       settingsController.bootstrap();
       programsController.bootstrap();
@@ -94,18 +92,18 @@ class _AthleticaAppState extends State<AthleticaApp> {
       flexPass: flexPassController,
       workout: workoutController,
       auth: authController,
-      navigation: navigationController,
       child: AnimatedBuilder(
         animation: settingsController,
         builder: (context, _) {
           final locale = settingsController.currentLocale;
-          return MaterialApp(
+          return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Athletica X',
             themeMode: settingsController.themeMode,
             theme: buildThemeData(brightness: Brightness.light),
             darkTheme: buildThemeData(brightness: Brightness.dark),
             locale: locale,
+            fallbackLocale: AppLocalizations.defaultLocale,
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: const [
               AppLocalizationsDelegate(),
@@ -114,19 +112,17 @@ class _AthleticaAppState extends State<AthleticaApp> {
               GlobalCupertinoLocalizations.delegate,
             ],
             initialRoute: settingsController.initialRoute,
-            routes: buildStaticRoutes(),
-            onGenerateRoute: (settings) => buildDynamicRoute(settings, settingsController),
-            navigatorKey: navigationController.navigatorKey,
-            navigatorObservers: [
-              navigationController,
-            ],
+            getPages: buildAppPages(),
+            defaultTransition: Transition.noTransition,
+            customTransition: FadeSlidePageTransition(),
+            transitionDuration: const Duration(milliseconds: 280),
             builder: (context, child) {
               final textTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
               return Directionality(
                 textDirection: settingsController.isArabic ? TextDirection.rtl : TextDirection.ltr,
                 child: Theme(
                   data: Theme.of(context).copyWith(textTheme: textTheme),
-                  child: child!,
+                  child: child ?? const SizedBox.shrink(),
                 ),
               );
             },

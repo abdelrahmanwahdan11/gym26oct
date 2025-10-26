@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../widgets/program_tile.dart';
@@ -22,14 +23,14 @@ class WarmupListScreen extends StatelessWidget {
                       child: ProgramTile(
                         program: program,
                         isFavorite: programs.favorites.contains(program.id),
-                        onTap: () => Navigator.of(context).pushNamed('program.details', arguments: program.id),
+                        onTap: () => Get.toNamed('program.details', arguments: program.id),
                         onFavorite: () => programs.toggleFavorite(program.id),
                       ),
                     ))
                 .toList(),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamed('workout.session'),
+              onPressed: () => Get.toNamed('workout.session'),
               style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
               child: const Text('ابدأ التمرين'),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../data/models/program.dart';
@@ -25,7 +26,7 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: BackButton(onPressed: () => Navigator.of(context).pop())),
+      appBar: AppBar(leading: BackButton(onPressed: () => Get.back())),
       body: FutureBuilder<Program?>(
         future: _future,
         builder: (context, snapshot) {
@@ -87,7 +88,7 @@ class _ProgramDetailsScreenState extends State<ProgramDetailsScreen> {
                     const SizedBox(width: 16),
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pushNamed('warmup.list'),
+                        onPressed: () => Get.toNamed('warmup.list'),
                         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                         child: const Text('Warm-ups'),
                       ),

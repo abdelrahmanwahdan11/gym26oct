@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../data/models/trainer.dart';
@@ -96,7 +97,7 @@ class _BookingSheetState extends State<BookingSheet> {
                       if (!mounted) return;
                       ScaffoldMessenger.of(context)
                           .showSnackBar(const SnackBar(content: Text('تم الحجز (Mock)')));
-                      Navigator.of(context).pop();
+                      Get.back();
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(52),

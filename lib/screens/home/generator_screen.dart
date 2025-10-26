@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../controllers/app_scope.dart';
 import '../../widgets/app_scaffold.dart';
@@ -66,7 +67,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                HeroProgramCard(onTap: () => Navigator.of(context).pushNamed('workout.session')),
+                HeroProgramCard(onTap: () => Get.toNamed('workout.session')),
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -80,7 +81,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                           child: ProgramTile(
                             program: program,
                             isFavorite: programs.favorites.contains(program.id),
-                            onTap: () => Navigator.of(context).pushNamed('program.details', arguments: program.id),
+                            onTap: () => Get.toNamed('program.details', arguments: program.id),
                             onFavorite: () => programs.toggleFavorite(program.id),
                           ),
                         ))
@@ -116,7 +117,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed('innovation.lab'),
+                    onTap: () => Get.toNamed('innovation.lab'),
                     child: Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
@@ -163,7 +164,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'generator') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {
