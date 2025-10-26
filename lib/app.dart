@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,7 +107,12 @@ class _AthleticaAppState extends State<AthleticaApp> {
             darkTheme: buildThemeData(brightness: Brightness.dark),
             locale: locale,
             supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [AppLocalizationsDelegate()],
+            localizationsDelegates: const [
+              AppLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             initialRoute: settingsController.initialRoute,
             routes: buildStaticRoutes(),
             onGenerateRoute: (settings) => buildDynamicRoute(settings, settingsController),
