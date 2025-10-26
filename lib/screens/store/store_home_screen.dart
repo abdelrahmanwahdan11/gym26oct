@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../controllers/app_scope.dart';
 import '../../controllers/store_controller.dart';
 import '../../widgets/app_scaffold.dart';
+import '../../widgets/feature_catalog_section.dart';
 import '../../widgets/product_card.dart';
 
 class StoreHomeScreen extends StatefulWidget {
@@ -114,6 +115,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     padding: EdgeInsets.all(24),
                     child: Center(child: CircularProgressIndicator()),
                   ),
+                FeatureCatalogSection(pageKey: 'store', title: 'ابتكارات متجر Athletica'),
               ],
             ),
           ),

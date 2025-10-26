@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/app_scope.dart';
+import '../../widgets/feature_catalog_section.dart';
 import '../../widgets/flexpass_badge.dart';
 
 class FlexPassScreen extends StatelessWidget {
@@ -49,6 +50,16 @@ class FlexPassScreen extends StatelessWidget {
                 title: const Text('Clubs Allowed'),
                 trailing: Text(flexPass.clubsAllowed.toString()),
               ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('تمت مشاركة FlexPass مع الأصدقاء (Mock)')));
+                },
+                icon: const Icon(Icons.share_outlined),
+                label: const Text('شارك امتيازات FlexPass'),
+              ),
+              FeatureCatalogSection(pageKey: 'flexpass', title: 'ابتكارات FlexPass'),
             ],
           ),
         );

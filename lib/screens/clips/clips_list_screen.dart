@@ -5,6 +5,7 @@ import '../../controllers/app_scope.dart';
 import '../../controllers/clips_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/clip_tile.dart';
+import '../../widgets/feature_catalog_section.dart';
 
 class ClipsListScreen extends StatefulWidget {
   const ClipsListScreen({super.key});
@@ -46,33 +47,33 @@ class _ClipsListScreenState extends State<ClipsListScreen> {
           onTabSelected: (tab) => _handleTab(context, tab),
           body: RefreshIndicator(
             onRefresh: clips.refresh,
-            child: ListView.builder(
+            child: ListView(
               controller: _scrollController,
-              itemCount: clips.clips.length + 1 + (clips.isLoading ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: TextField(
-                      decoration: const InputDecoration(hintText: 'ابحث عن مقطع…'),
-                      onChanged: clips.search,
-                    ),
-                  );
-                }
-                final clipIndex = index - 1;
-                if (clipIndex >= clips.clips.length) {
-                  return const Padding(
+              padding: const EdgeInsets.only(bottom: 120),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: TextField(
+                    decoration: const InputDecoration(hintText: 'ابحث عن مقطع…'),
+                    onChanged: clips.search,
+                  ),
+                ),
+                ...clips.clips
+                    .map(
+                      (clip) => ClipTile(
+                        clip: clip,
+                        onTap: () => ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text('Playing ${clip.title} (Mock)'))),
+                      ),
+                    )
+                    .toList(),
+                if (clips.isLoading)
+                  const Padding(
                     padding: EdgeInsets.all(24),
                     child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                final clip = clips.clips[clipIndex];
-                return ClipTile(
-                  clip: clip,
-                  onTap: () => ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('Playing ${clip.title} (Mock)'))),
-                );
-              },
+                  ),
+                FeatureCatalogSection(pageKey: 'clips', title: 'ابتكارات مكتبة المقاطع'),
+              ],
             ),
           ),
         );

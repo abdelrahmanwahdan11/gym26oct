@@ -17,6 +17,8 @@ class PrefsRepository {
   static const _favoritesKey = 'favorites';
   static const _bookingsKey = 'bookings';
   static const _flexPassKey = 'flexpass';
+  static const _challengesKey = 'challenges_completed';
+  static const _unitsKey = 'measurement_units';
 
   ThemeMode loadThemeMode() {
     final value = prefs.getString(_themeKey);
@@ -106,5 +108,23 @@ class PrefsRepository {
   Future<void> saveFlexPass(Map<String, dynamic> json) async {
     final encoded = json.encode(json);
     await prefs.setString(_flexPassKey, encoded);
+  }
+
+  Set<String> loadCompletedChallenges() {
+    final stored = prefs.getStringList(_challengesKey);
+    if (stored == null) return <String>{};
+    return stored.toSet();
+  }
+
+  Future<void> saveCompletedChallenges(Set<String> ids) async {
+    await prefs.setStringList(_challengesKey, ids.toList());
+  }
+
+  String loadUnits() {
+    return prefs.getString(_unitsKey) ?? 'kg';
+  }
+
+  Future<void> saveUnits(String units) async {
+    await prefs.setString(_unitsKey, units);
   }
 }

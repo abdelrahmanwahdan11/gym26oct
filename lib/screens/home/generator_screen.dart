@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../controllers/app_scope.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/chip_filter_row.dart';
+import '../../widgets/feature_catalog_section.dart';
 import '../../widgets/glass_app_bar.dart';
 import '../../widgets/hero_program_card.dart';
 import '../../widgets/program_tile.dart';
@@ -114,11 +115,11 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/innovation'),
-                    child: Container(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: GestureDetector(
+                  onTap: () => Get.toNamed('/innovation'),
+                  child: Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(28),
@@ -152,8 +153,47 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                         ],
                       ),
                     ),
+                ),
+              ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: GestureDetector(
+                    onTap: () => Get.toNamed('/challenges'),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        color: Theme.of(context).colorScheme.surface.withOpacity(0.92),
+                        border: Border.all(color: Theme.of(context).colorScheme.primary.withOpacity(0.18)),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('لوحة التحديات الجديدة',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 6),
+                                Text('أنهِ مهام المجتمع وشارك إنجازك مباشرة.',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.8))),
+                              ],
+                            ),
+                          ),
+                          const Icon(Icons.emoji_events_outlined, size: 32),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
+                FeatureCatalogSection(pageKey: 'generator', title: 'ابتكارات صفحة المولد'),
               ],
             ),
           ),

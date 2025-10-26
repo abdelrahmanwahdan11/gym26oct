@@ -14,16 +14,19 @@ class SettingsController extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   Locale _locale = AppLocalizations.defaultLocale;
   bool _onboardingDone = false;
+  String _weightUnit = 'kg';
 
   ThemeMode get themeMode => _themeMode;
   Locale get currentLocale => _locale;
   bool get isArabic => _locale.languageCode == 'ar';
   String get initialRoute => _onboardingDone ? '/home/generator' : '/onboarding';
+  String get weightUnit => _weightUnit;
 
   Future<void> bootstrap() async {
     _themeMode = prefs.loadThemeMode();
     _locale = prefs.loadLocale();
     _onboardingDone = prefs.isOnboardingDone();
+    _weightUnit = prefs.loadUnits();
     notifyListeners();
   }
 
@@ -44,6 +47,12 @@ class SettingsController extends ChangeNotifier {
   Future<void> markOnboardingComplete() async {
     _onboardingDone = true;
     await prefs.setOnboardingDone();
+    notifyListeners();
+  }
+
+  Future<void> setWeightUnit(String unit) async {
+    _weightUnit = unit;
+    await prefs.saveUnits(unit);
     notifyListeners();
   }
 }

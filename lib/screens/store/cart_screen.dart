@@ -13,6 +13,12 @@ class CartScreen extends StatelessWidget {
     return AnimatedBuilder(
       animation: store,
       builder: (context, _) {
+        final subtotal = store.cart.fold<double>(0, (previousValue, item) {
+          final product = products[item.productId];
+          if (product == null) return previousValue;
+          return previousValue + product.price * item.qty;
+        });
+        final total = store.cartTotal(products);
         return Scaffold(
           appBar: AppBar(title: const Text('عربة التسوق')),
           body: ListView(
@@ -45,6 +51,55 @@ class CartScreen extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 24),
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Order Summary', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Subtotal'),
+                          Text('${subtotal.toStringAsFixed(2)} USD'),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('Shipping (Mock)'),
+                          Text('Free'),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Discount'),
+                          Text('- ${(subtotal - total).toStringAsFixed(2)}'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                child: ListTile(
+                  leading: const Icon(Icons.location_on_outlined),
+                  title: const Text('Shipping Address (Mock)'),
+                  subtitle: const Text('Rawabi City • 12345 • اضغط لتعديل لاحقاً'),
+                  trailing: const Icon(Icons.edit_outlined),
+                  onTap: () => ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('تعديل العنوان سيتم لاحقاً (Mock)'))),
+                ),
+              ),
+              const SizedBox(height: 16),
               TextField(
                 decoration: const InputDecoration(labelText: 'Coupon Code (ATHLETICA20)'),
                 onSubmitted: store.applyCoupon,
@@ -56,7 +111,7 @@ class CartScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => Get.toNamed('/store/checkout'),
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
-                child: Text('Checkout • Total ${store.cartTotal(products).toStringAsFixed(2)} USD'),
+                child: Text('Checkout • Total ${total.toStringAsFixed(2)} USD'),
               ),
               const SizedBox(height: 12),
               TextButton(

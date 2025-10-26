@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../controllers/app_scope.dart';
 import '../../controllers/programs_controller.dart';
 import '../../widgets/app_scaffold.dart';
+import '../../widgets/feature_catalog_section.dart';
 import '../../widgets/program_tile.dart';
 
 class ProgramsListScreen extends StatefulWidget {
@@ -91,12 +92,15 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
                     child: Padding(
                       padding: EdgeInsets.all(24),
                       child: Center(child: CircularProgressIndicator()),
-                    ),
-                  ),
-              ],
+              ),
             ),
+                SliverToBoxAdapter(
+                  child: FeatureCatalogSection(pageKey: 'programs', title: 'ابتكارات صفحة البرامج'),
+                ),
+          ],
           ),
-        );
+        ),
+      );
       },
     );
   }

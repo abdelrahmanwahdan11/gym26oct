@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../data/feature_catalog.dart';
+
 class InnovationLabScreen extends StatefulWidget {
   const InnovationLabScreen({super.key});
 
@@ -62,7 +64,8 @@ class _InnovationLabScreenState extends State<InnovationLabScreen> {
       body: Column(
         children: [
           const SizedBox(height: 12),
-          Text('استكشف 30 فكرة جديدة', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold))
+          Text('استكشف 30 فكرة جديدة + ${FeatureCatalog.totalFeatureCount()} تحسينًا عبر الصفحات',
+                  style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold))
               .animate()
               .fadeIn(duration: 320.ms)
               .moveY(begin: 12, end: 0),

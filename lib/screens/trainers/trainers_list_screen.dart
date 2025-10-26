@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../controllers/app_scope.dart';
 import '../../controllers/trainers_controller.dart';
 import '../../widgets/app_scaffold.dart';
+import '../../widgets/feature_catalog_section.dart';
 import '../../widgets/trainer_card.dart';
 
 class TrainersListScreen extends StatefulWidget {
@@ -44,57 +45,56 @@ class _TrainersListScreenState extends State<TrainersListScreen> {
         return AppScaffold(
           activeTab: 'trainers',
           onTabSelected: (tab) => _handleTab(context, tab),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TextField(
-                  decoration: const InputDecoration(hintText: 'ابحث عن مدرب/نادي…'),
-                  onChanged: trainers.search,
-                ),
-              ),
-              ToggleButtons(
-                isSelected: ['Trainers', 'Gyms', 'Live Classes'].map((e) => e == trainers.segment).toList(),
-                onPressed: (index) => trainers.setSegment(['Trainers', 'Gyms', 'Live Classes'][index]),
-                borderRadius: BorderRadius.circular(24),
-                children: const [
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Trainers')),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Gyms')),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Live Classes')),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: trainers.refresh,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: trainers.trainers.length + (trainers.isLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index >= trainers.trainers.length) {
-                        return const Padding(
-                          padding: EdgeInsets.all(24),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                      final trainer = trainers.trainers[index];
-                      return TrainerCard(
-                        trainer: trainer,
-                        onTap: () => Get.toNamed('/trainer/${trainer.id}'),
-                      );
-                    },
+          body: RefreshIndicator(
+            onRefresh: trainers.refresh,
+            child: ListView(
+              controller: _scrollController,
+              padding: const EdgeInsets.only(bottom: 140),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: TextField(
+                    decoration: const InputDecoration(hintText: 'ابحث عن مدرب/نادي…'),
+                    onChanged: trainers.search,
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: OutlinedButton(
-                  onPressed: () => Get.toNamed('/trainer/register'),
-                  style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
-                  child: const Text('سجّل كمدرب / Register as Trainer'),
+                Center(
+                  child: ToggleButtons(
+                    isSelected: ['Trainers', 'Gyms', 'Live Classes'].map((e) => e == trainers.segment).toList(),
+                    onPressed: (index) => trainers.setSegment(['Trainers', 'Gyms', 'Live Classes'][index]),
+                    borderRadius: BorderRadius.circular(24),
+                    children: const [
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Trainers')),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Gyms')),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: Text('Live Classes')),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                const SizedBox(height: 12),
+                ...trainers.trainers
+                    .map(
+                      (trainer) => TrainerCard(
+                        trainer: trainer,
+                        onTap: () => Get.toNamed('/trainer/${trainer.id}'),
+                      ),
+                    )
+                    .toList(),
+                if (trainers.isLoading)
+                  const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: OutlinedButton(
+                    onPressed: () => Get.toNamed('/trainer/register'),
+                    style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
+                    child: const Text('سجّل كمدرب / Register as Trainer'),
+                  ),
+                ),
+                FeatureCatalogSection(pageKey: 'trainers', title: 'ابتكارات منصة المدربين'),
+              ],
+            ),
           ),
         );
       },

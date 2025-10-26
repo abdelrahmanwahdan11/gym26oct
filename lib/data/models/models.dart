@@ -1,5 +1,6 @@
 export 'booking.dart';
 export 'cart_item.dart';
+export 'challenge.dart';
 export 'clip.dart';
 export 'exercise.dart';
 export 'flexpass.dart';

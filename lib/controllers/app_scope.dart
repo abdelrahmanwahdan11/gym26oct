@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'auth_controller.dart';
+import 'challenges_controller.dart';
 import 'clips_controller.dart';
 import 'flexpass_controller.dart';
 import 'programs_controller.dart';
@@ -21,6 +22,7 @@ class AppScope extends InheritedWidget {
     required this.flexPass,
     required this.workout,
     required this.auth,
+    required this.challenges,
   });
 
   final SettingsController settings;
@@ -31,6 +33,7 @@ class AppScope extends InheritedWidget {
   final FlexPassController flexPass;
   final WorkoutController workout;
   final AuthController auth;
+  final ChallengesController challenges;
 
   static AppScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();

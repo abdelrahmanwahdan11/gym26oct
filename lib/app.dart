@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/app_scope.dart';
 import 'controllers/auth_controller.dart';
+import 'controllers/challenges_controller.dart';
 import 'controllers/clips_controller.dart';
 import 'controllers/flexpass_controller.dart';
 import 'controllers/programs_controller.dart';
@@ -18,6 +19,7 @@ import 'core/localization/app_localizations.dart';
 import 'core/routes.dart';
 import 'core/theme.dart';
 import 'core/animations.dart';
+import 'data/repositories/challenge_repository.dart';
 import 'data/repositories/clip_repository.dart';
 import 'data/repositories/flexpass_repository.dart';
 import 'data/repositories/prefs_repository.dart';
@@ -44,6 +46,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
   late final FlexPassController flexPassController;
   late final WorkoutController workoutController;
   late final AuthController authController;
+  late final ChallengesController challengesController;
 
   @override
   void initState() {
@@ -57,6 +60,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
     flexPassController = FlexPassController(FlexPassRepository(), prefsRepository);
     workoutController = WorkoutController(prefsRepository);
     authController = AuthController(prefsRepository);
+    challengesController = ChallengesController(ChallengeRepository(), prefsRepository);
     SchedulerBinding.instance.addPostFrameCallback((_) {
       settingsController.bootstrap();
       programsController.bootstrap();
@@ -66,6 +70,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
       flexPassController.bootstrap();
       workoutController.bootstrap();
       authController.bootstrap();
+      challengesController.bootstrap();
     });
   }
 
@@ -79,6 +84,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
     flexPassController.dispose();
     workoutController.dispose();
     authController.dispose();
+    challengesController.dispose();
     super.dispose();
   }
 
@@ -93,6 +99,7 @@ class _AthleticaAppState extends State<AthleticaApp> {
       flexPass: flexPassController,
       workout: workoutController,
       auth: authController,
+      challenges: challengesController,
       child: AnimatedBuilder(
         animation: settingsController,
         builder: (context, _) {

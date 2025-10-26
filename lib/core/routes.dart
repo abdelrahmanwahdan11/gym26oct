@@ -5,6 +5,7 @@ import '../screens/auth/login_screen.dart';
 import '../screens/auth/onboarding_screen.dart';
 import '../screens/auth/register_screen.dart';
 import '../screens/clips/clips_list_screen.dart';
+import '../screens/feature/challenges_screen.dart';
 import '../screens/feature/innovation_lab_screen.dart';
 import '../screens/flexpass/flexpass_screen.dart';
 import '../screens/home/generator_screen.dart';
@@ -46,6 +47,7 @@ List<GetPage<dynamic>> buildAppPages() {
     GetPage(name: '/settings', page: () => const SettingsScreen()),
     GetPage(name: '/trainer/register', page: () => const TrainerRegisterScreen()),
     GetPage(name: '/innovation', page: () => const InnovationLabScreen()),
+    GetPage(name: '/challenges', page: () => const ChallengesScreen()),
     GetPage(
       name: '/program/:id',
       page: () {
