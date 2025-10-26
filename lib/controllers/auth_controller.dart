@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/user.dart';
 import '../data/repositories/prefs_repository.dart';
 
-class AuthController extends ChangeNotifier {
+class AuthController extends GetxController {
   AuthController(this.prefs);
 
   final PrefsRepository prefs;
@@ -11,6 +12,12 @@ class AuthController extends ChangeNotifier {
   User? _user;
 
   User? get user => _user;
+
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
 
   Future<void> bootstrap() async {
     _user = User(
@@ -24,7 +31,7 @@ class AuthController extends ChangeNotifier {
       level: 'Intermediate',
       locale: prefs.loadLocale().languageCode,
     );
-    notifyListeners();
+    update();
   }
 
   Future<void> loginMock(String email) async {
@@ -39,6 +46,6 @@ class AuthController extends ChangeNotifier {
       level: 'Intermediate',
       locale: prefs.loadLocale().languageCode,
     );
-    notifyListeners();
+    update();
   }
 }

@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/models.dart';
 import '../data/repositories/prefs_repository.dart';
 import '../data/repositories/program_repository.dart';
 
-class ProgramsController extends ChangeNotifier {
+class ProgramsController extends GetxController {
   ProgramsController(this.repository, this.prefs);
 
   final ProgramsRepository repository;
@@ -37,6 +38,12 @@ class ProgramsController extends ChangeNotifier {
   String? get levelFilter => _levelFilter;
   Set<String> get favorites => _favorites;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     _favorites = prefs.loadFavorites();
     await refresh();
@@ -57,14 +64,14 @@ class ProgramsController extends ChangeNotifier {
 
   void setLevelFilter(String? level) {
     _levelFilter = level;
-    notifyListeners();
+    update();
   }
 
   void search(String query) {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 350), () {
       _query = query;
-      notifyListeners();
+      update();
     });
   }
 
@@ -75,12 +82,12 @@ class ProgramsController extends ChangeNotifier {
       _favorites.add(id);
     }
     await prefs.saveFavorites(_favorites);
-    notifyListeners();
+    update();
   }
 
   Future<void> _fetchPage() async {
     _isLoading = true;
-    notifyListeners();
+    update();
     final items = await repository.fetchPrograms(page: _page);
     if (items.isEmpty) {
       _hasMore = false;
@@ -88,12 +95,12 @@ class ProgramsController extends ChangeNotifier {
       _programs.addAll(items);
     }
     _isLoading = false;
-    notifyListeners();
+    update();
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _debounce?.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/settings_controller.dart';
 import '../shared/gradient_background.dart';
 
@@ -10,7 +10,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = AppScope.of(context).settings;
+    final settings = Get.find<SettingsController>();
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -49,8 +49,7 @@ class OnboardingScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     await settings.markOnboardingComplete();
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushReplacementNamed('auth.login');
+                    Get.offNamed('auth.login');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,

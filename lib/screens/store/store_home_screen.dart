@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/store_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/product_card.dart';
@@ -14,17 +14,18 @@ class StoreHomeScreen extends StatefulWidget {
 
 class _StoreHomeScreenState extends State<StoreHomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  late final StoreController storeController;
 
   @override
   void initState() {
     super.initState();
+    storeController = Get.find<StoreController>();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final store = AppScope.of(context).store;
     if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent - 200) {
-      store.loadMore();
+      storeController.loadMore();
     }
   }
 
@@ -36,15 +37,13 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final store = AppScope.of(context).store;
-    return AnimatedBuilder(
-      animation: store,
-      builder: (context, _) {
+    return GetBuilder<StoreController>(
+      builder: (store) {
         return AppScaffold(
           activeTab: 'store',
           onTabSelected: (tab) => _handleTab(context, tab),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => Navigator.of(context).pushNamed('store.cart'),
+            onPressed: () => Get.toNamed('store.cart'),
             icon: const Icon(Icons.shopping_cart_outlined),
             label: Text('${store.cart.length}'),
           ),
@@ -102,7 +101,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
                     children: store.products
                         .map((product) => ProductCard(
                               product: product,
-                              onTap: () => Navigator.of(context).pushNamed('store.product', arguments: product.id),
+                              onTap: () => Get.toNamed('store.product', arguments: product.id),
                               onAdd: () => store.addToCart(product),
                             ))
                         .toList(),
@@ -123,7 +122,7 @@ class _StoreHomeScreenState extends State<StoreHomeScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'store') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/auth_controller.dart';
+import '../../controllers/settings_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/stat_card.dart';
 
@@ -9,11 +11,9 @@ class ProfileHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scope = AppScope.of(context);
-    final auth = scope.auth;
-    return AnimatedBuilder(
-      animation: auth,
-      builder: (context, _) {
+    final settings = Get.find<SettingsController>();
+    return GetBuilder<AuthController>(
+      builder: (auth) {
         final user = auth.user;
         return AppScaffold(
           activeTab: 'profile',
@@ -34,7 +34,7 @@ class ProfileHomeScreen extends StatelessWidget {
                       ],
                     ),
                   const Spacer(),
-                  IconButton(onPressed: scope.settings.toggleTheme, icon: const Icon(Icons.brightness_6)),
+                  IconButton(onPressed: settings.toggleTheme, icon: const Icon(Icons.brightness_6)),
                 ],
               ),
               const SizedBox(height: 24),
@@ -56,19 +56,19 @@ class ProfileHomeScreen extends StatelessWidget {
               ListTile(
                 title: const Text('FlexPass'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => Navigator.of(context).pushNamed('flexpass.page'),
+                onTap: () => Get.toNamed('flexpass.page'),
               ),
               const SizedBox(height: 12),
               ListTile(
                 title: const Text('Stats'),
                 trailing: const Icon(Icons.bar_chart),
-                onTap: () => Navigator.of(context).pushNamed('stats'),
+                onTap: () => Get.toNamed('stats'),
               ),
               const SizedBox(height: 12),
               ListTile(
                 title: const Text('Settings'),
                 trailing: const Icon(Icons.settings_outlined),
-                onTap: () => Navigator.of(context).pushNamed('settings'),
+                onTap: () => Get.toNamed('settings'),
               ),
             ],
           ),
@@ -79,7 +79,7 @@ class ProfileHomeScreen extends StatelessWidget {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'profile') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

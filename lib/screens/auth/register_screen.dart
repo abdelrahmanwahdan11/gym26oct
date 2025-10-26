@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import '../shared/gradient_background.dart';
 
@@ -32,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(obscureText: true, decoration: const InputDecoration(labelText: 'Password / كلمة المرور')).animate().fadeIn(duration: 280.ms).moveY(begin: 12, end: 0),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Get.back(),
                   style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                   child: const Text('Register (Mock)'),
                 ).animate().fadeIn(duration: 280.ms).moveY(begin: 12, end: 0),

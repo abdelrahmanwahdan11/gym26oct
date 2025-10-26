@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/auth_controller.dart';
 import '../../controllers/settings_controller.dart';
 import '../shared/gradient_background.dart';
@@ -27,8 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = AppScope.of(context).auth;
-    final settings = AppScope.of(context).settings;
+    final auth = Get.find<AuthController>();
+    final settings = Get.find<SettingsController>();
     final theme = Theme.of(context);
     return GradientBackground(
       child: Scaffold(
@@ -71,8 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         await auth.loginMock(_emailController.text);
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pushReplacementNamed('home.generator');
+                        Get.offNamed('home.generator');
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -83,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ).animate().fadeIn(duration: 280.ms).moveY(begin: 12, end: 0),
                   const SizedBox(height: 16),
                   OutlinedButton(
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('home.generator'),
+                    onPressed: () => Get.offNamed('home.generator'),
                     style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                     child: const Text('Continue as Guest / دخول كضيف'),
                   ),
@@ -92,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pushNamed('auth.register'),
+                        onPressed: () => Get.toNamed('auth.register'),
                         child: const Text('Create account / إنشاء حساب'),
                       ),
                       IconButton(

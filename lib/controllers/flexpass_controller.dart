@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/models.dart';
 import '../data/repositories/flexpass_repository.dart';
 import '../data/repositories/prefs_repository.dart';
 
-class FlexPassController extends ChangeNotifier {
+class FlexPassController extends GetxController {
   FlexPassController(this.repository, this.prefs);
 
   final FlexPassRepository repository;
@@ -14,6 +15,12 @@ class FlexPassController extends ChangeNotifier {
 
   FlexPass? get flexPass => _flexPass;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     final cached = prefs.loadFlexPass();
     if (cached != null) {
@@ -21,7 +28,7 @@ class FlexPassController extends ChangeNotifier {
     } else {
       await refresh();
     }
-    notifyListeners();
+    update();
   }
 
   Future<void> refresh() async {
@@ -35,6 +42,6 @@ class FlexPassController extends ChangeNotifier {
       'weeklySchedule': _flexPass!.weeklySchedule,
       'perks': _flexPass!.perks,
     });
-    notifyListeners();
+    update();
   }
 }

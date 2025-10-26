@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/trainers_controller.dart';
 
 class TrainerRegisterScreen extends StatefulWidget {
   const TrainerRegisterScreen({super.key});
@@ -15,7 +16,7 @@ class _TrainerRegisterScreenState extends State<TrainerRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final trainers = AppScope.of(context).trainers;
+    final trainers = Get.find<TrainersController>();
     return Scaffold(
       appBar: AppBar(title: const Text('سجّل كمدرب')), 
       body: Padding(
@@ -38,7 +39,7 @@ class _TrainerRegisterScreenState extends State<TrainerRegisterScreen> {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context)
                       .showSnackBar(const SnackBar(content: Text('تم إنشاء ملف المدرب (محلي)')));
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                 child: const Text('حفظ الملف وإتاحته في التطبيق'),

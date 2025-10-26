@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/models.dart';
 import '../data/repositories/clip_repository.dart';
 
-class ClipsController extends ChangeNotifier {
+class ClipsController extends GetxController {
   ClipsController(this.repository);
 
   final ClipsRepository repository;
@@ -28,6 +29,12 @@ class ClipsController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasMore => _hasMore;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     await refresh();
   }
@@ -49,13 +56,13 @@ class ClipsController extends ChangeNotifier {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 350), () {
       _query = query;
-      notifyListeners();
+      update();
     });
   }
 
   Future<void> _fetch() async {
     _isLoading = true;
-    notifyListeners();
+    update();
     final items = await repository.fetchClips(page: _page);
     if (items.isEmpty) {
       _hasMore = false;
@@ -63,12 +70,12 @@ class ClipsController extends ChangeNotifier {
       _clips.addAll(items);
     }
     _isLoading = false;
-    notifyListeners();
+    update();
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _debounce?.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

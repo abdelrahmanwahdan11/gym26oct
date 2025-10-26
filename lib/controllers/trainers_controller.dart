@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/models.dart';
 import '../data/repositories/prefs_repository.dart';
 import '../data/repositories/trainers_repository.dart';
 
-class TrainersController extends ChangeNotifier {
+class TrainersController extends GetxController {
   TrainersController(this.repository, this.prefs);
 
   final TrainersRepository repository;
@@ -32,6 +33,12 @@ class TrainersController extends ChangeNotifier {
   bool get hasMore => _hasMore;
   String get segment => _segment;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     _bookings.addAll(prefs.loadBookings());
     await refresh();
@@ -52,7 +59,7 @@ class TrainersController extends ChangeNotifier {
 
   Future<void> _fetch() async {
     _isLoading = true;
-    notifyListeners();
+    update();
     final items = await repository.fetchTrainers(page: _page);
     if (items.isEmpty) {
       _hasMore = false;
@@ -60,28 +67,28 @@ class TrainersController extends ChangeNotifier {
       _trainers.addAll(items);
     }
     _isLoading = false;
-    notifyListeners();
+    update();
   }
 
   void search(String query) {
     _query = query;
-    notifyListeners();
+    update();
   }
 
   void setSegment(String segment) {
     _segment = segment;
-    notifyListeners();
+    update();
   }
 
   Future<void> createTrainer(Map<String, dynamic> payload) async {
     final trainer = await repository.createTrainer(payload);
     _trainers.insert(0, trainer);
-    notifyListeners();
+    update();
   }
 
   Future<void> addBooking(Map<String, dynamic> booking) async {
     _bookings.add(booking);
     await prefs.saveBookings(_bookings);
-    notifyListeners();
+    update();
   }
 }

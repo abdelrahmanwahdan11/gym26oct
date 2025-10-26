@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../data/models/models.dart';
 import '../data/repositories/prefs_repository.dart';
 import '../data/repositories/store_repository.dart';
 
-class StoreController extends ChangeNotifier {
+class StoreController extends GetxController {
   StoreController(this.repository, this.prefs);
 
   final StoreRepository repository;
@@ -31,6 +32,12 @@ class StoreController extends ChangeNotifier {
   String? get couponCode => _couponCode;
   double get couponValue => _couponValue;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     _cart.addAll(prefs.loadCartItems());
     await refresh();
@@ -51,7 +58,7 @@ class StoreController extends ChangeNotifier {
 
   Future<void> _fetch() async {
     _isLoading = true;
-    notifyListeners();
+    update();
     final items = await repository.fetchProducts(page: _page);
     if (items.isEmpty) {
       _hasMore = false;
@@ -59,12 +66,12 @@ class StoreController extends ChangeNotifier {
       _products.addAll(items);
     }
     _isLoading = false;
-    notifyListeners();
+    update();
   }
 
   Future<void> setCategory(String category) async {
     _categoryFilter = category;
-    notifyListeners();
+    update();
   }
 
   Future<void> addToCart(Product product) async {
@@ -75,7 +82,7 @@ class StoreController extends ChangeNotifier {
       _cart.add(CartItem(productId: product.id, qty: 1));
     }
     await prefs.saveCartItems(_cart);
-    notifyListeners();
+    update();
   }
 
   Future<void> updateQty(String productId, int qty) async {
@@ -87,7 +94,7 @@ class StoreController extends ChangeNotifier {
       _cart[index] = CartItem(productId: productId, qty: qty);
     }
     await prefs.saveCartItems(_cart);
-    notifyListeners();
+    update();
   }
 
   double cartTotal(Map<String, Product> productMap) {
@@ -110,12 +117,12 @@ class StoreController extends ChangeNotifier {
       _couponCode = code;
       _couponValue = 0;
     }
-    notifyListeners();
+    update();
   }
 
   Future<void> clearCart() async {
     _cart.clear();
     await prefs.saveCartItems(_cart);
-    notifyListeners();
+    update();
   }
 }
