@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class AppTranslations extends Translations {
+  static const supportedLocales = [Locale('ar'), Locale('en')];
+
+  @override
+  Map<String, Map<String, String>> get keys => {
+        'ar': {
+          'generator': 'المُوَلِّد',
+          'programs': 'البرامج',
+          'clips': 'المقاطع',
+          'store': 'المتجر',
+          'trainers': 'المدربون',
+          'profile': 'الملف',
+          'start_workout': 'ابدأ التمرين',
+          'join_program': 'انضم للبرنامج',
+          'book': 'احجز',
+          'contact': 'تواصل',
+          'add_to_cart': 'أضف للسلة',
+          'buy_now': 'اشترِ الآن',
+          'flexpass': 'FlexPass',
+          'search_hint': 'ابحث عن برنامج/تمرين/مدرب/منتج…',
+          'continue': 'استمر',
+          'login': 'تسجيل الدخول',
+          'register': 'إنشاء حساب',
+          'guest': 'دخول كضيف',
+          'email': 'البريد الإلكتروني',
+          'password': 'كلمة المرور',
+          'confirm_password': 'تأكيد كلمة المرور',
+          'name': 'الاسم الكامل',
+          'start_now': 'ابدأ الآن',
+          'checkout': 'الدفع',
+          'apply': 'تطبيق',
+          'warmups': 'تمارين الإحماء',
+          'become_trainer': 'سجّل كمدرب',
+        },
+        'en': {
+          'generator': 'Generator',
+          'programs': 'Programs',
+          'clips': 'Clips',
+          'store': 'Store',
+          'trainers': 'Trainers',
+          'profile': 'Profile',
+          'start_workout': 'Start Workout',
+          'join_program': 'Join Program',
+          'book': 'Book',
+          'contact': 'Contact',
+          'add_to_cart': 'Add to Cart',
+          'buy_now': 'Buy Now',
+          'flexpass': 'FlexPass',
+          'search_hint': 'Search program/exercise/trainer/product…',
+          'continue': 'Continue',
+          'login': 'Login',
+          'register': 'Register',
+          'guest': 'Continue as Guest',
+          'email': 'Email',
+          'password': 'Password',
+          'confirm_password': 'Confirm password',
+          'name': 'Full name',
+          'start_now': 'Start now',
+          'checkout': 'Checkout',
+          'apply': 'Apply',
+          'warmups': 'Warm-ups',
+          'become_trainer': 'Register as Trainer',
+        },
+      };
+}
