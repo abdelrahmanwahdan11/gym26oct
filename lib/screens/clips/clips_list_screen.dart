@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/clips_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/clip_tile.dart';
@@ -14,17 +14,18 @@ class ClipsListScreen extends StatefulWidget {
 
 class _ClipsListScreenState extends State<ClipsListScreen> {
   final ScrollController _scrollController = ScrollController();
+  late final ClipsController clipsController;
 
   @override
   void initState() {
     super.initState();
+    clipsController = Get.find<ClipsController>();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final clips = AppScope.of(context).clips;
     if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent - 200) {
-      clips.loadMore();
+      clipsController.loadMore();
     }
   }
 
@@ -36,10 +37,8 @@ class _ClipsListScreenState extends State<ClipsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final clips = AppScope.of(context).clips;
-    return AnimatedBuilder(
-      animation: clips,
-      builder: (context, _) {
+    return GetBuilder<ClipsController>(
+      builder: (clips) {
         return AppScaffold(
           activeTab: 'clips',
           onTabSelected: (tab) => _handleTab(context, tab),
@@ -81,7 +80,7 @@ class _ClipsListScreenState extends State<ClipsListScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'clips') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

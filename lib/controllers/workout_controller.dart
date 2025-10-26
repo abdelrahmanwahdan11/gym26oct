@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../data/repositories/prefs_repository.dart';
 
-class WorkoutController extends ChangeNotifier {
+class WorkoutController extends GetxController {
   WorkoutController(this.prefs);
 
   final PrefsRepository prefs;
@@ -17,10 +18,16 @@ class WorkoutController extends ChangeNotifier {
   double get progress => _progress;
   int get restSeconds => _restSeconds;
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     _progress = 0.0;
     _restSeconds = 30;
-    notifyListeners();
+    update();
   }
 
   void startSession() {
@@ -32,29 +39,29 @@ class WorkoutController extends ChangeNotifier {
         timer.cancel();
         HapticFeedback.mediumImpact();
       }
-      notifyListeners();
+      update();
     });
   }
 
   void pauseSession() {
     _timer?.cancel();
-    notifyListeners();
+    update();
   }
 
   void skipAhead() {
     _progress = (_progress + 0.2).clamp(0, 1);
     HapticFeedback.selectionClick();
-    notifyListeners();
+    update();
   }
 
   void setRestSeconds(int seconds) {
     _restSeconds = seconds;
-    notifyListeners();
+    update();
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _timer?.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

@@ -1,11 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../core/localization/app_localizations.dart';
 import '../data/repositories/prefs_repository.dart';
 
-class SettingsController extends ChangeNotifier {
+class SettingsController extends GetxController {
   SettingsController(this.prefs);
 
   final PrefsRepository prefs;
@@ -19,28 +20,34 @@ class SettingsController extends ChangeNotifier {
   bool get isArabic => _locale.languageCode == 'ar';
   String get initialRoute => _onboardingDone ? 'home.generator' : 'onboarding';
 
+  @override
+  void onInit() {
+    super.onInit();
+    bootstrap();
+  }
+
   Future<void> bootstrap() async {
     _themeMode = prefs.loadThemeMode();
     _locale = prefs.loadLocale();
     _onboardingDone = prefs.isOnboardingDone();
-    notifyListeners();
+    update();
   }
 
   Future<void> toggleTheme() async {
     _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     await prefs.saveThemeMode(_themeMode);
-    notifyListeners();
+    update();
   }
 
   Future<void> setLocale(Locale locale) async {
     _locale = locale;
     await prefs.saveLocale(locale);
-    notifyListeners();
+    update();
   }
 
   Future<void> markOnboardingComplete() async {
     _onboardingDone = true;
     await prefs.setOnboardingDone();
-    notifyListeners();
+    update();
   }
 }

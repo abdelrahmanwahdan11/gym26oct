@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/trainers_controller.dart';
 
 class BookingSheet extends StatefulWidget {
   const BookingSheet({super.key, required this.trainerId});
@@ -20,11 +21,11 @@ class _BookingSheetState extends State<BookingSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final trainers = AppScope.of(context).trainers;
-    final trainer = trainers.trainers.firstWhere(
-      (element) => element.id == widget.trainerId,
-      orElse: () => trainers.trainers.isNotEmpty ? trainers.trainers.first : null,
-    );
+    final trainers = Get.find<TrainersController>();
+    final matching = trainers.trainers.where((element) => element.id == widget.trainerId);
+    final trainer = matching.isNotEmpty
+        ? matching.first
+        : (trainers.trainers.isNotEmpty ? trainers.trainers.first : null);
     if (trainer == null) {
       return const Scaffold(body: Center(child: Text('Trainer not available')));
     }
@@ -79,7 +80,7 @@ class _BookingSheetState extends State<BookingSheet> {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context)
                       .showSnackBar(const SnackBar(content: Text('تم الحجز (Mock)')));
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                 child: const Text('تأكيد الحجز'),

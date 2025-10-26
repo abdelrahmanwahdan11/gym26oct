@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'controllers/app_scope.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/clips_controller.dart';
 import 'controllers/flexpass_controller.dart';
@@ -33,92 +32,50 @@ class AthleticaApp extends StatefulWidget {
 
 class _AthleticaAppState extends State<AthleticaApp> {
   late final PrefsRepository prefsRepository;
-  late final SettingsController settingsController;
-  late final ProgramsController programsController;
-  late final ClipsController clipsController;
-  late final StoreController storeController;
-  late final TrainersController trainersController;
-  late final FlexPassController flexPassController;
-  late final WorkoutController workoutController;
-  late final AuthController authController;
 
   @override
   void initState() {
     super.initState();
     prefsRepository = PrefsRepository(widget.prefs);
-    settingsController = SettingsController(prefsRepository);
-    programsController = ProgramsController(ProgramsRepository(), prefsRepository);
-    clipsController = ClipsController(ClipsRepository());
-    storeController = StoreController(StoreRepository(), prefsRepository);
-    trainersController = TrainersController(TrainersRepository(), prefsRepository);
-    flexPassController = FlexPassController(FlexPassRepository(), prefsRepository);
-    workoutController = WorkoutController(prefsRepository);
-    authController = AuthController(prefsRepository);
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      settingsController.bootstrap();
-      programsController.bootstrap();
-      clipsController.bootstrap();
-      storeController.bootstrap();
-      trainersController.bootstrap();
-      flexPassController.bootstrap();
-      workoutController.bootstrap();
-      authController.bootstrap();
-    });
-  }
-
-  @override
-  void dispose() {
-    settingsController.dispose();
-    programsController.dispose();
-    clipsController.dispose();
-    storeController.dispose();
-    trainersController.dispose();
-    flexPassController.dispose();
-    workoutController.dispose();
-    authController.dispose();
-    super.dispose();
+    Get.put(SettingsController(prefsRepository), permanent: true);
+    Get.put(ProgramsController(ProgramsRepository(), prefsRepository), permanent: true);
+    Get.put(ClipsController(ClipsRepository()), permanent: true);
+    Get.put(StoreController(StoreRepository(), prefsRepository), permanent: true);
+    Get.put(TrainersController(TrainersRepository(), prefsRepository), permanent: true);
+    Get.put(FlexPassController(FlexPassRepository(), prefsRepository), permanent: true);
+    Get.put(WorkoutController(prefsRepository), permanent: true);
+    Get.put(AuthController(prefsRepository), permanent: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppScope(
-      settings: settingsController,
-      programs: programsController,
-      clips: clipsController,
-      store: storeController,
-      trainers: trainersController,
-      flexPass: flexPassController,
-      workout: workoutController,
-      auth: authController,
-      child: AnimatedBuilder(
-        animation: settingsController,
-        builder: (context, _) {
-          final locale = settingsController.currentLocale;
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Athletica X',
-            themeMode: settingsController.themeMode,
-            theme: buildThemeData(brightness: Brightness.light),
-            darkTheme: buildThemeData(brightness: Brightness.dark),
-            locale: locale,
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [AppLocalizationsDelegate()],
-            initialRoute: settingsController.initialRoute,
-            routes: buildStaticRoutes(),
-            onGenerateRoute: (settings) => buildDynamicRoute(settings, settingsController),
-            builder: (context, child) {
-              final textTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
-              return Directionality(
-                textDirection: settingsController.isArabic ? TextDirection.rtl : TextDirection.ltr,
-                child: Theme(
-                  data: Theme.of(context).copyWith(textTheme: textTheme),
-                  child: child!,
-                ),
-              );
-            },
-          );
-        },
-      ),
+    return GetBuilder<SettingsController>(
+      builder: (settingsController) {
+        final locale = settingsController.currentLocale;
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Athletica X',
+          themeMode: settingsController.themeMode,
+          theme: buildThemeData(brightness: Brightness.light),
+          darkTheme: buildThemeData(brightness: Brightness.dark),
+          locale: locale,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: const [AppLocalizationsDelegate()],
+          initialRoute: settingsController.initialRoute,
+          routes: buildStaticRoutes(),
+          onGenerateRoute: (settings) => buildDynamicRoute(settings, settingsController),
+          builder: (context, child) {
+            final textTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
+            return Directionality(
+              textDirection: settingsController.isArabic ? TextDirection.rtl : TextDirection.ltr,
+              child: Theme(
+                data: Theme.of(context).copyWith(textTheme: textTheme),
+                child: child!,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

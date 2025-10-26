@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/flexpass_controller.dart';
 import '../../widgets/flexpass_badge.dart';
 
 class FlexPassScreen extends StatelessWidget {
@@ -8,10 +9,8 @@ class FlexPassScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flexPassController = AppScope.of(context).flexPass;
-    return AnimatedBuilder(
-      animation: flexPassController,
-      builder: (context, _) {
+    return GetBuilder<FlexPassController>(
+      builder: (flexPassController) {
         final flexPass = flexPassController.flexPass;
         if (flexPass == null) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));

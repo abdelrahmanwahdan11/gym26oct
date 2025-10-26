@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/trainers_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/trainer_card.dart';
@@ -14,17 +14,18 @@ class TrainersListScreen extends StatefulWidget {
 
 class _TrainersListScreenState extends State<TrainersListScreen> {
   final ScrollController _scrollController = ScrollController();
+  late final TrainersController trainersController;
 
   @override
   void initState() {
     super.initState();
+    trainersController = Get.find<TrainersController>();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final trainers = AppScope.of(context).trainers;
     if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent - 200) {
-      trainers.loadMore();
+      trainersController.loadMore();
     }
   }
 
@@ -36,10 +37,8 @@ class _TrainersListScreenState extends State<TrainersListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final trainers = AppScope.of(context).trainers;
-    return AnimatedBuilder(
-      animation: trainers,
-      builder: (context, _) {
+    return GetBuilder<TrainersController>(
+      builder: (trainers) {
         return AppScaffold(
           activeTab: 'trainers',
           onTabSelected: (tab) => _handleTab(context, tab),
@@ -79,7 +78,7 @@ class _TrainersListScreenState extends State<TrainersListScreen> {
                       final trainer = trainers.trainers[index];
                       return TrainerCard(
                         trainer: trainer,
-                        onTap: () => Navigator.of(context).pushNamed('trainer.details', arguments: trainer.id),
+                        onTap: () => Get.toNamed('trainer.details', arguments: trainer.id),
                       );
                     },
                   ),
@@ -88,7 +87,7 @@ class _TrainersListScreenState extends State<TrainersListScreen> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pushNamed('trainer.register'),
+                  onPressed: () => Get.toNamed('trainer.register'),
                   style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                   child: const Text('سجّل كمدرب / Register as Trainer'),
                 ),
@@ -102,7 +101,7 @@ class _TrainersListScreenState extends State<TrainersListScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'trainers') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

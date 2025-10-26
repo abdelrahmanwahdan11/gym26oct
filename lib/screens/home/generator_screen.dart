@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/programs_controller.dart';
+import '../../controllers/settings_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/chip_filter_row.dart';
 import '../../widgets/glass_app_bar.dart';
@@ -17,17 +19,20 @@ class GeneratorScreen extends StatefulWidget {
 
 class _GeneratorScreenState extends State<GeneratorScreen> {
   final ScrollController _scrollController = ScrollController();
+  late final ProgramsController programsController;
+  late final SettingsController settingsController;
 
   @override
   void initState() {
     super.initState();
+    programsController = Get.find<ProgramsController>();
+    settingsController = Get.find<SettingsController>();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final controller = AppScope.of(context).programs;
     if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent - 200) {
-      controller.loadMore();
+      programsController.loadMore();
     }
   }
 
@@ -39,16 +44,13 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final scope = AppScope.of(context);
-    final programs = scope.programs;
-    return AnimatedBuilder(
-      animation: programs,
-      builder: (context, _) {
+    return GetBuilder<ProgramsController>(
+      builder: (programs) {
         return AppScaffold(
           activeTab: 'generator',
           onTabSelected: (tab) => _handleTab(context, tab),
           appBar: GlassAppBar(title: 'Ready to Workout', actions: [
-            IconButton(onPressed: scope.settings.toggleTheme, icon: const Icon(Icons.brightness_6)),
+            IconButton(onPressed: settingsController.toggleTheme, icon: const Icon(Icons.brightness_6)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
           ]),
           body: RefreshIndicator(
@@ -66,7 +68,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                HeroProgramCard(onTap: () => Navigator.of(context).pushNamed('workout.session')),
+                HeroProgramCard(onTap: () => Get.toNamed('workout.session')),
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -80,7 +82,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                           child: ProgramTile(
                             program: program,
                             isFavorite: programs.favorites.contains(program.id),
-                            onTap: () => Navigator.of(context).pushNamed('program.details', arguments: program.id),
+                            onTap: () => Get.toNamed('program.details', arguments: program.id),
                             onFavorite: () => programs.toggleFavorite(program.id),
                           ),
                         ))
@@ -122,7 +124,7 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'generator') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

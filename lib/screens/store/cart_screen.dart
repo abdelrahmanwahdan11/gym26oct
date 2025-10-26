@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/store_controller.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final store = AppScope.of(context).store;
-    final products = {for (final product in store.products) product.id: product};
-    return AnimatedBuilder(
-      animation: store,
-      builder: (context, _) {
+    return GetBuilder<StoreController>(
+      builder: (store) {
+        final products = {for (final product in store.products) product.id: product};
         return Scaffold(
           appBar: AppBar(title: const Text('عربة التسوق')),
           body: ListView(
@@ -53,7 +52,7 @@ class CartScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pushNamed('store.checkout'),
+                onPressed: () => Get.toNamed('store.checkout'),
                 style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
                 child: Text('Checkout • Total ${store.cartTotal(products).toStringAsFixed(2)} USD'),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
+import '../../controllers/programs_controller.dart';
 
 class ProgramFiltersSheet extends StatefulWidget {
   const ProgramFiltersSheet({super.key});
@@ -14,7 +15,7 @@ class _ProgramFiltersSheetState extends State<ProgramFiltersSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final programs = AppScope.of(context).programs;
+    final programs = Get.find<ProgramsController>();
     _level ??= programs.levelFilter;
     return Scaffold(
       appBar: AppBar(title: const Text('Filters')),
@@ -37,7 +38,7 @@ class _ProgramFiltersSheetState extends State<ProgramFiltersSheet> {
             ElevatedButton(
               onPressed: () {
                 programs.setLevelFilter(_level);
-                Navigator.of(context).pop();
+                Get.back();
               },
               style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
               child: const Text('Apply Filters'),

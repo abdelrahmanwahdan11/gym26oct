@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/programs_controller.dart';
 import '../../widgets/app_scaffold.dart';
 import '../../widgets/program_tile.dart';
@@ -14,17 +14,18 @@ class ProgramsListScreen extends StatefulWidget {
 
 class _ProgramsListScreenState extends State<ProgramsListScreen> {
   final ScrollController _scrollController = ScrollController();
+  late final ProgramsController programsController;
 
   @override
   void initState() {
     super.initState();
+    programsController = Get.find<ProgramsController>();
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final controller = AppScope.of(context).programs;
     if (_scrollController.position.pixels > _scrollController.position.maxScrollExtent - 200) {
-      controller.loadMore();
+      programsController.loadMore();
     }
   }
 
@@ -36,10 +37,8 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final programs = AppScope.of(context).programs;
-    return AnimatedBuilder(
-      animation: programs,
-      builder: (context, _) {
+    return GetBuilder<ProgramsController>(
+      builder: (programs) {
         return AppScaffold(
           activeTab: 'programs',
           onTabSelected: (tab) => _handleTab(context, tab),
@@ -57,7 +56,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
                   ),
                   actions: [
                     IconButton(
-                      onPressed: () => Navigator.of(context).pushNamed('filters.sheet'),
+                      onPressed: () => Get.toNamed('filters.sheet'),
                       icon: const Icon(Icons.filter_alt_outlined),
                     )
                   ],
@@ -71,7 +70,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
                         return ProgramTile(
                           program: program,
                           isFavorite: programs.favorites.contains(program.id),
-                          onTap: () => Navigator.of(context).pushNamed('program.details', arguments: program.id),
+                          onTap: () => Get.toNamed('program.details', arguments: program.id),
                           onFavorite: () => programs.toggleFavorite(program.id),
                         );
                       },
@@ -102,7 +101,7 @@ class _ProgramsListScreenState extends State<ProgramsListScreen> {
 
   void _handleTab(BuildContext context, String tab) {
     if (tab == 'programs') return;
-    Navigator.of(context).pushReplacementNamed(_tabToRoute(tab));
+    Get.offNamed(_tabToRoute(tab));
   }
 
   String _tabToRoute(String tab) {

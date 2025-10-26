@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
-import '../../controllers/app_scope.dart';
 import '../../controllers/workout_controller.dart';
 
 class WorkoutSessionScreen extends StatelessWidget {
@@ -9,10 +9,8 @@ class WorkoutSessionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final workout = AppScope.of(context).workout;
-    return AnimatedBuilder(
-      animation: workout,
-      builder: (context, _) {
+    return GetBuilder<WorkoutController>(
+      builder: (workout) {
         return Scaffold(
           appBar: AppBar(title: const Text('Live Session')),
           body: ListView(
