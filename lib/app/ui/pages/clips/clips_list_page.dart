@@ -23,6 +23,13 @@ class _ClipsListPageState extends State<ClipsListPage> {
     scrollController.addListener(_onScroll);
   }
 
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
+  }
+
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent - 120) {
@@ -39,7 +46,7 @@ class _ClipsListPageState extends State<ClipsListPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Clips'),
+        title: Text('clips'.tr),
       ),
       body: AppBackground(
         child: Column(
@@ -48,7 +55,7 @@ class _ClipsListPageState extends State<ClipsListPage> {
               padding: const EdgeInsets.all(16),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'ابحث عن مقطع…',
+                  hintText: 'search_hint'.tr,
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
                   fillColor: theme.cardColor,
@@ -66,6 +73,7 @@ class _ClipsListPageState extends State<ClipsListPage> {
                 child: Obx(
                   () => ListView.separated(
                     controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
                     itemBuilder: (context, index) => ClipTile(clip: controller.clips[index]),
                     separatorBuilder: (_, __) => const SizedBox(height: 12),

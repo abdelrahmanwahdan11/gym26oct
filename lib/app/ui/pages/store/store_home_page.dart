@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/cart_controller.dart';
 import '../../../controllers/store_controller.dart';
+import '../../routes/app_routes.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_bottom_nav.dart';
 import '../../widgets/product_card.dart';
@@ -27,6 +28,13 @@ class _StoreHomePageState extends State<StoreHomePage> {
     scrollController.addListener(_onScroll);
   }
 
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
+  }
+
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent - 120) {
@@ -40,7 +48,7 @@ class _StoreHomePageState extends State<StoreHomePage> {
       extendBody: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Store'),
+        title: Text('store'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -73,6 +81,7 @@ class _StoreHomePageState extends State<StoreHomePage> {
                 child: Obx(
                   () => GridView.builder(
                     controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -90,8 +99,8 @@ class _StoreHomePageState extends State<StoreHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Get.toNamed('/store/cart'),
-        label: Obx(() => Text('Cart (${cart.cartItems.length})')),
+        onPressed: () => Get.toNamed(AppRoutes.cart),
+        label: Obx(() => Text('${'cart'.tr} (${cart.cartItems.length})')),
         icon: const Icon(Icons.shopping_cart),
       ),
       bottomNavigationBar: AppBottomNav(active: 'store'),

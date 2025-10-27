@@ -15,7 +15,7 @@ class WarmupsPage extends GetView<ProgramsController> {
     final workoutController = Get.find<WorkoutController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Warm-ups'),
+        title: Text('warmups'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

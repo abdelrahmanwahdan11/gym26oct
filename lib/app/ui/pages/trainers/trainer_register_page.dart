@@ -20,11 +20,21 @@ class _TrainerRegisterPageState extends State<TrainerRegisterPage> {
   final contactsController = TextEditingController();
 
   @override
+  void dispose() {
+    nameController.dispose();
+    bioController.dispose();
+    specialtiesController.dispose();
+    priceController.dispose();
+    contactsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = Get.find<TrainersController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register as Trainer'),
+        title: Text('become_trainer'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -37,29 +47,29 @@ class _TrainerRegisterPageState extends State<TrainerRegisterPage> {
               children: [
                 TextFormField(
                   controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+                  decoration: InputDecoration(labelText: 'name'.tr),
+                  validator: (value) => value == null || value.isEmpty ? 'required'.tr : null,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: bioController,
-                  decoration: const InputDecoration(labelText: 'Bio'),
+                  decoration: InputDecoration(labelText: 'bio'.tr),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: specialtiesController,
-                  decoration: const InputDecoration(labelText: 'Specialties (comma separated)'),
+                  decoration: InputDecoration(labelText: 'specialties'.tr),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: priceController,
-                  decoration: const InputDecoration(labelText: 'Price per session'),
+                  decoration: InputDecoration(labelText: 'price_per_session'.tr),
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: contactsController,
-                  decoration: const InputDecoration(labelText: 'Contact info'),
+                  decoration: InputDecoration(labelText: 'contact'.tr),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
@@ -78,11 +88,11 @@ class _TrainerRegisterPageState extends State<TrainerRegisterPage> {
                             'email': 'trainer@example.com',
                           }
                         });
-                        Get.snackbar('Trainer', 'Profile created locally');
+                        Get.snackbar('trainers'.tr, 'trainer_created'.tr);
                         Get.back();
                       }
                     },
-                    child: const Text('Save'),
+                    child: Text('save'.tr),
                   ),
                 )
               ],

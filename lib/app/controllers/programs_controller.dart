@@ -9,10 +9,12 @@ class ProgramsController extends GetxController {
 
   final ProgramsRepository _repository;
 
+  final List<Program> _allPrograms = <Program>[];
   final RxList<Program> programs = <Program>[].obs;
   final RxList<Exercise> warmups = <Exercise>[].obs;
   final RxBool isLoading = false.obs;
   final RxBool hasMore = true.obs;
+  final RxString query = ''.obs;
   int _page = 0;
 
   @override
@@ -24,6 +26,7 @@ class ProgramsController extends GetxController {
 
   Future<void> loadInitial() async {
     programs.clear();
+    _allPrograms.clear();
     _page = 0;
     hasMore.value = true;
     await loadMore();
@@ -36,9 +39,33 @@ class ProgramsController extends GetxController {
     if (data.isEmpty) {
       hasMore.value = false;
     } else {
-      programs.addAll(data);
+      _allPrograms.addAll(data);
+      _applyFilter();
       _page++;
+      if (data.length < _repository.pageSize) {
+        hasMore.value = false;
+      }
     }
     isLoading.value = false;
+  }
+
+  void filter(String value) {
+    query.value = value;
+    _applyFilter();
+  }
+
+  void _applyFilter() {
+    if (query.value.isEmpty) {
+      programs.assignAll(_allPrograms);
+    } else {
+      final lower = query.value.toLowerCase();
+      programs.assignAll(
+        _allPrograms.where(
+          (program) => program.title.toLowerCase().contains(lower) ||
+              program.tags.any((tag) => tag.toLowerCase().contains(lower)) ||
+              program.coach.toLowerCase().contains(lower),
+        ),
+      );
+    }
   }
 }

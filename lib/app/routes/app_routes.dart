@@ -19,6 +19,7 @@ class AppRoutes {
   static const flexpass = '/flexpass';
   static const profile = '/profile';
   static const settings = '/settings';
+  static const notifications = '/notifications';
 
-  static const initial = generator;
+  static const initial = onboarding;
 }

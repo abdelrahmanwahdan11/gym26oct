@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-import '../data/models/product.dart';
 import '../data/models/product.dart' as models;
 import '../data/repositories/prefs_repository.dart';
 import '../data/repositories/store_repository.dart';
@@ -22,7 +21,7 @@ class CartController extends GetxController {
     cartItems.assignAll(saved);
   }
 
-  Product? findProduct(String id) => _storeRepository.byId(id);
+  models.Product? findProduct(String id) => _storeRepository.byId(id);
 
   double get total {
     double sum = 0;

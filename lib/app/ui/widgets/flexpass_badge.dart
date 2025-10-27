@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 
 import 'glass_container.dart';
 
@@ -34,9 +35,10 @@ class FlexPassBadge extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('FlexPass', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                Text('flexpass'.tr,
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 4),
-                Text('Expires $expiry',
+                Text('expires_on'.trParams({'date': expiry}),
                     style: theme.textTheme.bodySmall
                         ?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.6))),
               ],

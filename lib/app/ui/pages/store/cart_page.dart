@@ -12,7 +12,7 @@ class CartPage extends GetView<CartController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart'),
+        title: Text('cart'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -23,6 +23,7 @@ class CartPage extends GetView<CartController> {
               child: Obx(
                 () => ListView.separated(
                   padding: const EdgeInsets.all(16),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: controller.cartItems.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
@@ -53,13 +54,13 @@ class CartPage extends GetView<CartController> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Obx(() => Text('Total: ${controller.total.toStringAsFixed(2)}')), 
+                  Obx(() => Text('${'total'.tr}: ${controller.total.toStringAsFixed(2)}')),
                   const SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () => Get.toNamed(AppRoutes.checkout),
-                      child: const Text('Checkout'),
+                      child: Text('checkout'.tr),
                     ),
                   ),
                 ],

@@ -13,7 +13,7 @@ class FlexPassPage extends GetView<FlexPassController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FlexPass'),
+        title: Text('flexpass'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -33,7 +33,7 @@ class FlexPassPage extends GetView<FlexPassController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Weekly Schedule',
+                    Text('weekly_schedule'.tr,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
                     const SizedBox(height: 12),
                     for (final item in pass.weeklySchedule)
@@ -56,7 +56,7 @@ class FlexPassPage extends GetView<FlexPassController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Perks', style: Theme.of(context).textTheme.titleMedium),
+                    Text('perks'.tr, style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 12),
                     for (final perk in pass.perks)
                       Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/trainers_controller.dart';
+import '../../../routes/app_routes.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_bottom_nav.dart';
 import '../../widgets/trainer_card.dart';
@@ -21,6 +22,13 @@ class _TrainersListPageState extends State<TrainersListPage> {
   void initState() {
     super.initState();
     scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    super.dispose();
   }
 
   void _onScroll() {
@@ -48,7 +56,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
               padding: const EdgeInsets.all(16),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'ابحث عن مدرب/نادي…',
+                  hintText: 'search_hint'.tr,
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
                   fillColor: theme.cardColor,
@@ -66,6 +74,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
                 child: Obx(
                   () => ListView.separated(
                     controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
                     itemBuilder: (context, index) => TrainerCard(trainer: controller.trainers[index]),
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
@@ -79,8 +88,8 @@ class _TrainersListPageState extends State<TrainersListPage> {
               child: SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () => Get.toNamed('/trainer/register'),
-                  child: const Text('سجّل كمدرب / Register as Trainer'),
+                  onPressed: () => Get.toNamed(AppRoutes.trainerRegister),
+                  child: Text('become_trainer'.tr),
                 ),
               ),
             )

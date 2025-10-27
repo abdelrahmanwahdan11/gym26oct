@@ -22,6 +22,7 @@ class LocaleController extends GetxController {
   Future<void> setLocale(Locale locale) async {
     _locale.value = locale;
     await _prefsRepository.saveLocale(locale);
+    Get.updateLocale(locale);
     update();
   }
 }
