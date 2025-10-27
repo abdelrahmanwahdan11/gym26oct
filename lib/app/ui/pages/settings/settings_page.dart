@@ -14,7 +14,7 @@ class SettingsPage extends StatelessWidget {
     final locale = Get.find<LocaleController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text('settings'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -25,13 +25,13 @@ class SettingsPage extends StatelessWidget {
             Obx(
               () => SwitchListTile(
                 value: theme.themeMode == ThemeMode.dark,
-                title: const Text('Dark mode'),
+                title: Text('dark_mode'.tr),
                 onChanged: (value) => theme.setTheme(value ? ThemeMode.dark : ThemeMode.light),
               ),
             ),
             const SizedBox(height: 12),
             ListTile(
-              title: const Text('Language'),
+              title: Text('language'.tr),
               trailing: DropdownButton<String>(
                 value: locale.locale.languageCode,
                 items: const [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../routes/app_routes.dart';
 import 'glass_container.dart';
 
 class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,12 +29,13 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             IconButton(
               icon: const Icon(Icons.notifications_none),
-              onPressed: onNotifications ?? () => Get.toNamed('/notifications'),
+              onPressed:
+                  onNotifications ?? () => Get.toNamed(AppRoutes.notifications),
             ),
             const SizedBox(width: 4),
             IconButton(
               icon: const Icon(Icons.settings_outlined),
-              onPressed: onSettings ?? () => Get.toNamed('/settings'),
+              onPressed: onSettings ?? () => Get.toNamed(AppRoutes.settings),
             ),
           ],
         ),

@@ -7,7 +7,9 @@ import '../data/repositories/store_repository.dart';
 class CartBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => StoreRepository(), fenix: true);
+    if (!Get.isRegistered<StoreRepository>()) {
+      Get.lazyPut(() => StoreRepository(), fenix: true);
+    }
     Get.lazyPut(() => CartController(Get.find<PrefsRepository>(), Get.find()),
         fenix: true);
   }

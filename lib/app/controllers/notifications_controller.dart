@@ -24,6 +24,10 @@ class NotificationsController extends GetxController {
     await _prefsRepository.saveNotifications(notifications);
   }
 
+  Future<void> reload() async {
+    notifications.assignAll(_prefsRepository.notifications);
+  }
+
   Future<void> clear() async {
     notifications.clear();
     await _prefsRepository.saveNotifications(const []);

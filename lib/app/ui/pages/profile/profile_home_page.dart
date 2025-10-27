@@ -18,7 +18,7 @@ class ProfileHomePage extends StatelessWidget {
       extendBody: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text('profile'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [

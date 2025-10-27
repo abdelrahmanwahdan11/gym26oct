@@ -20,6 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   bool obscure = true;
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
@@ -43,8 +50,8 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(labelText: 'email'.tr),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Required';
-                        if (!value.contains('@')) return 'Invalid email';
+                        if (value == null || value.isEmpty) return 'required'.tr;
+                        if (!value.contains('@')) return 'invalid_email'.tr;
                         return null;
                       },
                     ),
@@ -60,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       validator: (value) {
-                        if (value == null || value.length < 6) return 'Min 6 chars';
+                        if (value == null || value.length < 6) {
+                          return 'min_chars'.trParams({'count': '6'});
+                        }
                         return null;
                       },
                     ),

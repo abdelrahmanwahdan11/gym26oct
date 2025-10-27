@@ -18,11 +18,21 @@ class _ProgramsListPageState extends State<ProgramsListPage> {
   final controller = Get.find<ProgramsController>();
   final search = Get.find<SearchController>();
   final scrollController = ScrollController();
+  final TextEditingController searchFieldController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     scrollController.addListener(_onScroll);
+    searchFieldController.text = search.query.value;
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    searchFieldController.dispose();
+    super.dispose();
   }
 
   void _onScroll() {
@@ -48,14 +58,25 @@ class _ProgramsListPageState extends State<ProgramsListPage> {
           onRefresh: controller.loadInitial,
           child: CustomScrollView(
             controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: TextField(
+                    controller: searchFieldController,
                     decoration: InputDecoration(
                       hintText: 'search_hint'.tr,
                       prefixIcon: const Icon(Icons.search),
+                      suffixIcon: Obx(() => search.query.value.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                search.clear();
+                                searchFieldController.clear();
+                              },
+                            )
+                          : null),
                       filled: true,
                       fillColor: theme.cardColor,
                       border: OutlineInputBorder(
@@ -92,7 +113,7 @@ class _ProgramsListPageState extends State<ProgramsListPage> {
                           child: Center(
                             child: ElevatedButton(
                               onPressed: controller.loadMore,
-                              child: const Text('Load more'),
+                              child: Text('load_more'.tr),
                             ),
                           ),
                         )

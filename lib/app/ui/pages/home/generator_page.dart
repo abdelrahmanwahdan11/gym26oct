@@ -81,19 +81,22 @@ class GeneratorPage extends GetView<ProgramsController> {
                     itemBuilder: (context, index) => ProgramTile(program: controller.programs[index]),
                   ),
                 ),
-                if (controller.hasMore.value)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: ElevatedButton(
-                      onPressed: controller.loadMore,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.12),
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                      ),
-                      child: const Text('Load more'),
-                    ),
-                  ),
+                Obx(
+                  () => controller.hasMore.value
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: ElevatedButton(
+                            onPressed: controller.loadMore,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white.withOpacity(0.12),
+                              foregroundColor: Theme.of(context).colorScheme.primary,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                            ),
+                            child: Text('load_more'.tr),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   child: Text('Your Progress',

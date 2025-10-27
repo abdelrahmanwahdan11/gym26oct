@@ -8,6 +8,7 @@ import '../bindings/cart_binding.dart';
 import '../bindings/clips_binding.dart';
 import '../bindings/flexpass_binding.dart';
 import '../bindings/locale_binding.dart';
+import '../bindings/notifications_binding.dart';
 import '../bindings/programs_binding.dart';
 import '../bindings/search_binding.dart';
 import '../bindings/stats_binding.dart';
@@ -23,6 +24,7 @@ import '../ui/pages/booking/booking_bottom_sheet.dart';
 import '../ui/pages/clips/clips_list_page.dart';
 import '../ui/pages/flexpass/flexpass_page.dart';
 import '../ui/pages/home/generator_page.dart';
+import '../ui/pages/notifications/notifications_page.dart';
 import '../ui/pages/onboarding/onboarding_page.dart';
 import '../ui/pages/profile/profile_home_page.dart';
 import '../ui/pages/programs/program_details_page.dart';
@@ -55,8 +57,8 @@ class FadeSlideTransition extends CustomTransition {
       adapter: AnimationAdapter(animation),
       child: child,
       effects: [
-        FadeEffect(curve: Curves.easeOut),
-        MoveEffect(curve: Curves.easeOut, begin: const Offset(0, 40), end: Offset.zero),
+        FadeEffect(duration: 220.ms, curve: Curves.easeOut),
+        MoveEffect(curve: Curves.easeOut, begin: const Offset(0, 30), end: Offset.zero),
       ],
     );
   }
@@ -87,6 +89,7 @@ class AppPages {
           page: () => const GeneratorPage(),
           bindings: [
             ProgramsBinding(),
+            WorkoutBinding(),
             StatsBinding(),
           ],
           middlewares: [OnboardingMiddleware()],
@@ -169,6 +172,7 @@ class AppPages {
           name: AppRoutes.booking,
           page: () => const BookingBottomSheet(),
           binding: BookingBinding(),
+          middlewares: [AuthMiddleware()],
           transition: Transition.downToUp,
         ),
         GetPage(
@@ -188,6 +192,12 @@ class AppPages {
           page: () => const SettingsPage(),
           bindings: [ThemeBinding(), LocaleBinding()],
           transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: AppRoutes.notifications,
+          page: () => const NotificationsPage(),
+          binding: NotificationsBinding(),
+          customTransition: const FadeSlideTransition(),
         ),
       ];
 }

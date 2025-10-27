@@ -23,6 +23,15 @@ class _RegisterPageState extends State<RegisterPage> {
   bool obscureConfirm = true;
 
   @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
@@ -44,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: nameController,
                       decoration: InputDecoration(labelText: 'name'.tr),
-                      validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+                      validator: (value) => value == null || value.isEmpty ? 'required'.tr : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -52,8 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(labelText: 'email'.tr),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return 'Required';
-                        if (!value.contains('@')) return 'Invalid email';
+                        if (value == null || value.isEmpty) return 'required'.tr;
+                        if (!value.contains('@')) return 'invalid_email'.tr;
                         return null;
                       },
                     ),
@@ -69,7 +78,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       validator: (value) {
-                        if (value == null || value.length < 6) return 'Min 6 chars';
+                        if (value == null || value.length < 6) {
+                          return 'min_chars'.trParams({'count': '6'});
+                        }
                         return null;
                       },
                     ),
@@ -85,7 +96,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       validator: (value) {
-                        if (value != passwordController.text) return 'Passwords do not match';
+                        if (value != passwordController.text) {
+                          return 'passwords_no_match'.tr;
+                        }
                         return null;
                       },
                     ),

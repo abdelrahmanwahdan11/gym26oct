@@ -11,7 +11,7 @@ class CheckoutPage extends GetView<CartController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Checkout'),
+        title: Text('checkout'.tr),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -21,11 +21,11 @@ class CheckoutPage extends GetView<CartController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Total: ${controller.total.toStringAsFixed(2)}'),
+              Text('${'total'.tr}: ${controller.total.toStringAsFixed(2)}'),
               const SizedBox(height: 16),
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'كوبون خصم',
+                  labelText: 'coupon_optional'.tr,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
                 ),
               ),
@@ -34,11 +34,11 @@ class CheckoutPage extends GetView<CartController> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.snackbar('Order', 'Mock checkout complete');
+                    Get.snackbar('checkout'.tr, 'order_mock'.tr);
                     controller.clearCart();
                     Get.back();
                   },
-                  child: const Text('Place Order'),
+                  child: Text('place_order'.tr),
                 ),
               )
             ],

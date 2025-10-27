@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/booking_controller.dart';
 import '../../../controllers/trainers_controller.dart';
 import '../../../data/models/trainer.dart';
 import '../../../routes/app_routes.dart';
@@ -22,7 +21,6 @@ class TrainerDetailsPage extends StatelessWidget {
       trainer = controller.findById(arg);
     }
     trainer ??= controller.trainers.first;
-    final booking = Get.find<BookingController>();
     return Scaffold(
       appBar: AppBar(
         title: Text(trainer.name),
@@ -53,7 +51,7 @@ class TrainerDetailsPage extends StatelessWidget {
               children: trainer.specialties.map((e) => Chip(label: Text(e))).toList(),
             ),
             const SizedBox(height: 16),
-            Text('Gyms', style: Theme.of(context).textTheme.titleMedium),
+            Text('gyms'.tr, style: Theme.of(context).textTheme.titleMedium),
             for (final gym in trainer.gyms)
               GlassContainer(
                 padding: const EdgeInsets.all(16),
@@ -62,7 +60,7 @@ class TrainerDetailsPage extends StatelessWidget {
                   children: [
                     Text(gym.name, style: Theme.of(context).textTheme.titleSmall),
                     Text('${gym.city} • ${gym.address}'),
-                    Text('Discount ${gym.discountPercent}%'),
+                    Text('discount'.trParams({'percent': gym.discountPercent.toString()})),
                   ],
                 ),
               ),
@@ -71,7 +69,7 @@ class TrainerDetailsPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () => Get.snackbar('Contact', trainer.contacts.phone),
+                    onPressed: () => Get.snackbar('contact'.tr, trainer.contacts.phone),
                     child: Text('contact'.tr),
                   ),
                 ),
@@ -79,12 +77,6 @@ class TrainerDetailsPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      booking.addBooking({
-                        'trainerId': trainer!.id,
-                        'gymId': trainer.gyms.first.id,
-                        'slot': trainer.slots.first,
-                        'status': 'pending',
-                      });
                       Get.toNamed(AppRoutes.booking, arguments: trainer);
                     },
                     child: Text('book'.tr),

@@ -36,6 +36,6 @@ class ExerciseTile extends StatelessWidget {
           )
         ],
       ),
-    ).animate(interval: 60.ms).fadeIn().scale(begin: 0.98, end: 1);
+    ).animate(interval: 60.ms).fadeIn(260.ms).moveY(begin: 14, end: 0, curve: Curves.easeOut);
   }
 }
